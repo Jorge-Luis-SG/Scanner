@@ -6,16 +6,22 @@ export default function ScannerComponent() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState<boolean>(false);
 
-  const getCameraPermissions = async () => {
-    const { status } = await Camera.requestCameraPermissionsAsync();
-    setHasPermission(status === "granted");
-  };
-
   useEffect(() => {
+    const getCameraPermissions = async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    };
+
     getCameraPermissions();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }: ScanningResult) => {
+  const handleBarCodeScanned = ({
+    type,
+    data,
+  }: {
+    type: string;
+    data: string;
+  }) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
@@ -34,23 +40,11 @@ export default function ScannerComponent() {
         barcodeScannerSettings={{
           barcodeTypes: ["qr", "pdf417"],
         }}
-        style={StyleSheet.absoluteFillObject}
+        style={styles.camera}
       />
 
-      {!scanned && (
-        <TouchableOpacity
-          onPress={() => setScanned(true)}
-        >
-          <Text>Scannear</Text>
-        </TouchableOpacity>
-      )}
-
       {scanned && (
-        <TouchableOpacity
-          onPress={() => setScanned(false)}
-        >
-          <Text>Escanear nuevamente</Text>
-        </TouchableOpacity>
+        <Button title={"Scanear de nuevo"} onPress={() => setScanned(false)} />
       )}
     </View>
   );
@@ -61,5 +55,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
+  },
+  camera: {
+    height: 250,
+    width: "80%",
+    margin: "auto",
   },
 });

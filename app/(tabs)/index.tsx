@@ -24,8 +24,7 @@ export default function HomeScreen() {
       <ThemedView style={styles.containerInputSearch}>
         <TextInput placeholder='Ingresa el codigo de barras' style={styles.inputSearch}/>
       </ThemedView> 
-      <ThemedView>
-        <ThemedText>Scanner</ThemedText>
+      <ThemedView style={styles.boxScanner}>
         <ScannerComponent></ScannerComponent>
       </ThemedView>
     </ParallaxScrollView> 
@@ -54,6 +53,9 @@ const styles = StyleSheet.create({
   inputSearch: {
     fontSize: 17,
     color: '#8f8f8f'
+  },
+  boxScanner: {
+    marginTop:15
   }
 
 });
