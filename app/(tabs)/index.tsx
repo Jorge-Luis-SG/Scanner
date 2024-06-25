@@ -6,8 +6,11 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import ScannerComponent from '@/components/ScannerComponent';
+import { useState } from 'react';
+import ProductData from '@/components/ProductData';
 
 export default function HomeScreen() {
+  const [barCode, setBarCode] = useState('')
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
@@ -22,11 +25,14 @@ export default function HomeScreen() {
       <ThemedText>Consulte el precio de sus productos aquí.</ThemedText>
      
       <ThemedView style={styles.containerInputSearch}>
-        <TextInput placeholder='Ingresa el codigo de barras' style={styles.inputSearch}/>
+        <TextInput placeholder='Ingresa el codigo de barras' style={styles.inputSearch}
+        value={barCode} onChangeText={(e)=> setBarCode(e)}
+        />
       </ThemedView> 
       <ThemedView style={styles.boxScanner}>
-        <ScannerComponent></ScannerComponent>
+        <ScannerComponent setBarCode={setBarCode} barCode={barCode} ></ScannerComponent>
       </ThemedView>
+      <ProductData barCode={barCode}/>
     </ParallaxScrollView> 
   );
 }

@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { CameraView, Camera, ScanningResult } from "expo-camera";
 
-export default function ScannerComponent() {
+interface BarCode {
+  barCode: string;
+  setBarCode: React.Dispatch<React.SetStateAction<string>>;
+}
+export default function ScannerComponent({ barCode, setBarCode }: BarCode) {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState<boolean>(false);
-
+  const Api_URL = "";
   useEffect(() => {
     const getCameraPermissions = async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -22,8 +26,9 @@ export default function ScannerComponent() {
     type: string;
     data: string;
   }) => {
+    if (barCode === data) return;
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    setBarCode(data);
   };
 
   if (hasPermission === null) {
@@ -38,7 +43,7 @@ export default function ScannerComponent() {
       <CameraView
         onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
         barcodeScannerSettings={{
-          barcodeTypes: ["qr", "pdf417"],
+          barcodeTypes: ["qr", "pdf417", "upc_a"],
         }}
         style={styles.camera}
       />
